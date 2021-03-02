@@ -6,6 +6,7 @@
     <title>Library</title>
     <link href='css/reset.css' rel='stylesheet' type="text/css">
     <link href='css/style.css' rel='stylesheet' type="text/css">
+    <link href="css/style2.css" rel="stylesheet" type="text/css">
 </head>
 <body>
     <header class='title'>
@@ -65,7 +66,7 @@
                     <div class='delete-button'><img src='assets/delete-button.svg'></div>
                 </div>
             </div>--> 
-            <div class='add block' id='add-book'>+</div>
+            <div class='add block' id='add-book' >+</div>
         </div>
     </main>
     <!-- <div class="popup js-popup">
@@ -102,6 +103,29 @@
         </form>
     </div>
     <div class="overlay js-overlay"></div> -->
+    <div id="popUpOverlay"></div>
+        <div id="popUpBox">
+            <div id="box">
+            <!-- <i class="fas fa-check-circle fa-5x"></i> -->
+            <form id='form'>
+                <!-- <label for="name">Name of the book</label><br>-->
+                <input type="text" for="book_name" id="book_name" name="book_name" maxlength=50 placeholder="Book's name" class='lengthy-input' required><br><br>
+                <!-- <label for="author">Author's name</label><br> -->
+                <input type="text" id="author" name="author" maxlength=50 placeholder="Author" class='lengthy-input' required><br><br>
+                <!-- <label for="pages"></label><br> -->
+                <input type="number" id="page" name="page" min=1 max=10000 placeholder="Pages" class='lengthy-input' required><br><br>
+                <label for="read"><input type="checkbox" id="read" name="read">Read</label>
+            </form>
+            <!-- <h1>Here Goes Your Popup</h1> -->
+            <div id="closeModal"></div>
+        </div>
+    </div>
+    <!-- <button  class="btn">Show Alert</button> -->
+    <!-- <form>
+        <label ></label>
+        <input type="text">
+    </form> -->
     <script src="app.js"></script>
+    <!-- <script src="./app2.js"></script> -->
 </body>
 </html>
