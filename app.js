@@ -4,6 +4,7 @@ let uniqueID = 0;
 let addBookButton = document.getElementById('add-book');
 let deleteButtons = document.querySelectorAll('.delete-button');
 let updateButtons = document.querySelectorAll('.update-button');
+let toggleReadButtons = document.querySelectorAll('.read-status');
 let form = document.getElementById('form');
 let book_name = document.getElementById('book_name');
 let page = document.getElementById('page');
@@ -39,7 +40,8 @@ function addBookToLibrary(title, author, pages, read) {
 function getAllBooks(){
   removeBooks();
   for(let i=0;i<myLibrary.length;i++){
-    mainContainer.innerHTML+=`<div class='book block' id='${myLibrary[i].id}'>
+    if(myLibrary[i].read===true){
+      mainContainer.innerHTML+=`<div class='book block' id='${myLibrary[i].id}'>
     <div class='book-name' >
         <p>${myLibrary[i].title}</p>
     </div>
@@ -51,6 +53,20 @@ function getAllBooks(){
           <div class='delete-button' ><img src='assets/delete-button.svg'></div>
       </div>
     </div>`;
+    }else{
+      mainContainer.innerHTML+=`<div class='book block' id='${myLibrary[i].id}'>
+    <div class='book-name' >
+        <p>${myLibrary[i].title}</p>
+    </div>
+    <div class='book-author'><p>${myLibrary[i].author}</p></div>
+      <div class='block-bottom'>
+          <div class='pages'><p>${myLibrary[i].pages}</p></div>
+          <div class='read-status'><img src='assets/cross.svg'></div>
+          <div class='update-button'><img src='assets/update.svg'></div>
+          <div class='delete-button' ><img src='assets/delete-button.svg'></div>
+      </div>
+    </div>`;
+    }
     console.log(myLibrary[i]);
   }
   mainContainer.innerHTML+=`<div class='add block' id='add-book' onclick="Alert.render('')">+</div>`;
@@ -71,12 +87,20 @@ function getAllBooks(){
     console.log(`Delete button ${i} : ${deleteButtons[i]}`);
     deleteButtons[i].addEventListener('click',deleteBook);
   }
+
   updateButtons = document.querySelectorAll('.update-button');
   console.log("Update buttons:"+updateButtons);
   console.log(updateButtons);
   for(let i=0;i<updateButtons.length;i++){
     console.log(`Update button ${i} : ${updateButtons[i]}`);
     updateButtons[i].addEventListener('click',Alert.updateRender);
+  }
+  
+  toggleReadButtons = document.querySelectorAll('.read-status');
+  console.log("Read buttons:"+toggleReadButtons);
+  for(let i=0;i<toggleReadButtons.length;i++){
+    console.log(`Toggle read button ${i} : ${toggleReadButtons[i]}`);
+    toggleReadButtons[i].addEventListener('click',toggleReadStatus);
   }
 }
 function removeBooks(){
@@ -116,6 +140,19 @@ function updateBook(bookTitle,bookAuthor,bookPages,bookRead,id){
   getAllBooks();
 }
 
+function toggleReadStatus(){
+  let id = this.parentNode.parentNode.id;
+  console.log(`Read status ${id}`);
+  for(let i=0;i<myLibrary.length;i++){
+    if(id==myLibrary[i].id){
+      myLibrary[i].read = !(myLibrary[i].read);
+      console.log(myLibrary[i].read);
+      break;
+    }
+  }
+  getAllBooks();
+}
+
 var Alert = new CustomAlert();
 function CustomAlert(){
   this.render = function(){
@@ -141,7 +178,7 @@ function CustomAlert(){
       let bookTitle = book_name.value;
       let bookAuthor = author.value;
       let bookPages = page.value;
-      let bookRead = read.value;
+      let bookRead = read.checked;
       addBookToLibrary(bookTitle,bookAuthor,bookPages,bookRead);
       form.reset();
     }
@@ -172,7 +209,12 @@ function CustomAlert(){
         book_name.setAttribute('value',bookTitle);
         author.setAttribute('value',bookAuthor);
         page.setAttribute('value',bookPages);
-        read.setAttribute('value',bookRead);
+        if(bookRead==true){
+          read.setAttribute('checked',bookRead);
+        }else{
+          read.setAttribute('unchecked',bookRead);
+        }
+        
       }
       console.log(form);
       popUpBox.style.display = "block";
@@ -193,7 +235,7 @@ function CustomAlert(){
       let bookTitle = book_name.value;
       let bookAuthor = author.value;
       let bookPages = page.value;
-      let bookRead = read.value;
+      let bookRead = read.checked;
       console.log(id);
       updateBook(bookTitle,bookAuthor,bookPages,bookRead,id);
       // addBookToLibrary(bookTitle,bookAuthor,bookPages,bookRead);
@@ -204,7 +246,8 @@ function CustomAlert(){
       book_name.removeAttribute('value');
       page.removeAttribute('value');
       author.removeAttribute('value');
-      read.removeAttribute('value');
+      read.removeAttribute('checked');
+      read.removeAttribute('unchecked');
     }
     else{
       Alert.updateRender();
