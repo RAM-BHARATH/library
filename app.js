@@ -1,4 +1,5 @@
 let myLibrary = [];
+let uniqueID=0;
 if(JSON.parse(localStorage.getItem('library'))==null){
   myLibrary=[];
   console.log(1);
@@ -8,8 +9,8 @@ else{
   console.log(2);
   
 }
-let uniqueID=0;
-if(JSON.parse(localStorage.getItem('ID'))==0){
+
+if(JSON.parse(localStorage.getItem('ID'))==null){
   uniqueID = 0;
 }else{
   uniqueID = JSON.parse(localStorage.getItem('ID'));
