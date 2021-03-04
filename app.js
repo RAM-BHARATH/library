@@ -1,11 +1,11 @@
 let myLibrary = [];
-if(JSON.parse(localStorage.getItem('library'))==[]){
+if(JSON.parse(localStorage.getItem('library'))==null){
   myLibrary=[];
   console.log(1);
 }
 else{
   myLibrary = JSON.parse(localStorage.getItem('library'));
-  console.log(myLibrary);
+  console.log(2);
   
 }
 let uniqueID=0;
