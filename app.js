@@ -1,6 +1,19 @@
 let myLibrary = [];
-let uniqueID = 0;
-
+if(JSON.parse(localStorage.getItem('library'))==[]){
+  myLibrary=[];
+  console.log(1);
+}
+else{
+  myLibrary = JSON.parse(localStorage.getItem('library'));
+  console.log(myLibrary);
+  
+}
+let uniqueID=0;
+if(JSON.parse(localStorage.getItem('ID'))==0){
+  uniqueID = 0;
+}else{
+  uniqueID = JSON.parse(localStorage.getItem('ID'));
+}
 let addBookButton = document.getElementById('add-book');
 let deleteButtons = document.querySelectorAll('.delete-button');
 let updateButtons = document.querySelectorAll('.update-button');
@@ -14,8 +27,8 @@ let read = document.getElementById('read');
 const mainContainer = document.getElementById('books-container');
 
 addBookButton.addEventListener('click',function(){
-  console.log(addBookButton.textContent);
-  console.log("Add clicked");
+  // console.log(addBookButton.textContent);
+  // console.log("Add clicked");
   Alert.render('');
 });
 
@@ -33,7 +46,7 @@ function addBookToLibrary(title, author, pages, read) {
   // do stuff here
   let book = new Book(title, author, pages, read);
   myLibrary.push(book);
-  console.log(myLibrary);
+  // console.log(myLibrary);
   getAllBooks();
 }
 
@@ -67,12 +80,15 @@ function getAllBooks(){
       </div>
     </div>`;
     }
-    console.log(myLibrary[i]);
+    // console.log(myLibrary[i]);
   }
+  localStorage.setItem('library',JSON.stringify(myLibrary));
+  console.log("From local storage API: "+JSON.parse(localStorage.getItem('library')));
+  localStorage.setItem('ID',uniqueID);
   mainContainer.innerHTML+=`<div class='add block' id='add-book' onclick="Alert.render('')">+</div>`;
   addBookButton = document.getElementById('add-book');
   addBookButton.addEventListener('click',function(){
-    console.log("Add clicked");
+    // console.log("Add clicked");
     Alert.render('');
     // let bookTitle = prompt('title');
     // let bookAuthor = prompt('Book Author');
@@ -84,22 +100,22 @@ function getAllBooks(){
   deleteButtons = document.querySelectorAll('.delete-button');
   console.log("Delete buttons:"+deleteButtons);
   for(let i=0;i<deleteButtons.length;i++){
-    console.log(`Delete button ${i} : ${deleteButtons[i]}`);
+    // console.log(`Delete button ${i} : ${deleteButtons[i]}`);
     deleteButtons[i].addEventListener('click',deleteBook);
   }
 
   updateButtons = document.querySelectorAll('.update-button');
-  console.log("Update buttons:"+updateButtons);
-  console.log(updateButtons);
+  // console.log("Update buttons:"+updateButtons);
+  // console.log(updateButtons);
   for(let i=0;i<updateButtons.length;i++){
-    console.log(`Update button ${i} : ${updateButtons[i]}`);
+    // console.log(`Update button ${i} : ${updateButtons[i]}`);
     updateButtons[i].addEventListener('click',Alert.updateRender);
   }
   
   toggleReadButtons = document.querySelectorAll('.read-status');
-  console.log("Read buttons:"+toggleReadButtons);
+  // console.log("Read buttons:"+toggleReadButtons);
   for(let i=0;i<toggleReadButtons.length;i++){
-    console.log(`Toggle read button ${i} : ${toggleReadButtons[i]}`);
+    // console.log(`Toggle read button ${i} : ${toggleReadButtons[i]}`);
     toggleReadButtons[i].addEventListener('click',toggleReadStatus);
   }
 }
@@ -109,7 +125,7 @@ function removeBooks(){
 
 function deleteBook(){
   let id = this.parentNode.parentNode.id;
-  console.log("Delete clicked: "+id);
+  // console.log("Delete clicked: "+id);
   for(let i=0;i<myLibrary.length;i++){
     if(id==myLibrary[i].id){
       let index = i;
@@ -142,7 +158,7 @@ function updateBook(bookTitle,bookAuthor,bookPages,bookRead,id){
 
 function toggleReadStatus(){
   let id = this.parentNode.parentNode.id;
-  console.log(`Read status ${id}`);
+  // console.log(`Read status ${id}`);
   for(let i=0;i<myLibrary.length;i++){
     if(id==myLibrary[i].id){
       myLibrary[i].read = !(myLibrary[i].read);
@@ -152,6 +168,8 @@ function toggleReadStatus(){
   }
   getAllBooks();
 }
+
+//Pop Up form functions
 
 var Alert = new CustomAlert();
 function CustomAlert(){
@@ -172,8 +190,8 @@ function CustomAlert(){
     document.getElementById('popUpBox').style.display = "none";
     document.getElementById('popUpOverlay').style.display = "none";
     // document.getElementById('form').style.display='none';
-    console.log(book_name.value);
-    console.log(read.checked);
+    // console.log(book_name.value);
+    // console.log(read.checked);
     if(book_name.value!==''&&author.value!==''&&page.value>0&&page.value<=10000){
       let bookTitle = book_name.value;
       let bookAuthor = author.value;
@@ -198,14 +216,12 @@ function CustomAlert(){
     for(let i=0;i<myLibrary.length;i++){
       if(id==myLibrary[i].id){
         let index = i;
-        // myLibrary.splice(index,1);
-        // myLibrary[i].title;
         let bookTitle = myLibrary[i].title;
         let bookAuthor = myLibrary[i].author;
         let bookPages = myLibrary[i].pages;
         let bookRead = myLibrary[i].read;
         let bookId = myLibrary[i].id;
-        console.log(form);
+        // console.log(form);
         book_name.setAttribute('value',bookTitle);
         author.setAttribute('value',bookAuthor);
         page.setAttribute('value',bookPages);
@@ -216,7 +232,7 @@ function CustomAlert(){
         }
         
       }
-      console.log(form);
+      // console.log(form);
       popUpBox.style.display = "block";
       document.getElementById('closeModal').innerHTML = `<button onclick="Alert.update(${id})">Update</button>`;    
   }
@@ -228,7 +244,6 @@ function CustomAlert(){
     let author = document.getElementById('author');
     document.getElementById('popUpBox').style.display = "none";
     document.getElementById('popUpOverlay').style.display = "none";
-    // document.getElementById('form').style.display='none';
     console.log(book_name.value);
     console.log(read.checked);
     if(book_name.value!==''&&author.value!==''&&page.value>0&&page.value<=10000){
@@ -238,11 +253,6 @@ function CustomAlert(){
       let bookRead = read.checked;
       console.log(id);
       updateBook(bookTitle,bookAuthor,bookPages,bookRead,id);
-      // addBookToLibrary(bookTitle,bookAuthor,bookPages,bookRead);
-      // myLibrary[i].title = bookTitle;
-      // myLibrary[i].author = bookAuthor;
-      // myLibrary[i].pages = bookPages;
-      // myLibrary[i].bookRead = bookRead;
       book_name.removeAttribute('value');
       page.removeAttribute('value');
       author.removeAttribute('value');
@@ -256,3 +266,43 @@ function CustomAlert(){
 }
 
 form.reset();
+
+function storageAvailable(type) {
+  var storage;
+  try {
+      storage = window[type];
+      var x = '__storage_test__';
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+  }
+  catch(e) {
+      return e instanceof DOMException && (
+          // everything except Firefox
+          e.code === 22 ||
+          // Firefox
+          e.code === 1014 ||
+          // test name field too, because code might not be present
+          // everything except Firefox
+          e.name === 'QuotaExceededError' ||
+          // Firefox
+          e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+          // acknowledge QuotaExceededError only if there's something already stored
+          (storage && storage.length !== 0);
+  }
+  
+}
+if (storageAvailable('localStorage')) {
+  console.log(`Yippee! We can use localStorage awesomeness`);
+}
+else {
+  console.log(`Too bad, no localStorage for us`);
+}
+localStorage.setItem('library',JSON.stringify(myLibrary));
+localStorage.setItem('ID',uniqueID);
+
+function getBooksFromStorage(){
+  console.log(JSON.parse(localStorage.getItem('library')));
+}
+getBooksFromStorage();
+getAllBooks();
