@@ -2,11 +2,11 @@ let myLibrary = [];
 let uniqueID=0;
 if(JSON.parse(localStorage.getItem('library'))==null){
   myLibrary=[];
-  console.log(1);
+  console.log(1+": Library item not available so far");
 }
 else{
   myLibrary = JSON.parse(localStorage.getItem('library'));
-  console.log(2);
+  console.log(2+": We have library item already!");
   
 }
 
@@ -303,7 +303,12 @@ localStorage.setItem('library',JSON.stringify(myLibrary));
 localStorage.setItem('ID',uniqueID);
 
 function getBooksFromStorage(){
-  console.log(JSON.parse(localStorage.getItem('library')));
+  let items = JSON.parse(localStorage.getItem('library'))
+  console.log("Books in storage:"+items.length);
+  for(let i=0;i<items.length;i++){
+    console.log(`Item ${i}:`);
+    console.log(items[i]);
+  }
 }
 getBooksFromStorage();
 getAllBooks();
