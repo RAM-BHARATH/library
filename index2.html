@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <link href='css/reset.css' rel='stylesheet' type="text/css">
+    <link href='css/style.css' rel='stylesheet' type="text/css">
+    <link href="css/style2.css" rel="stylesheet" type="text/css"><link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cousine&display=swap" rel="stylesheet"> 
+
+</head>
+<body>
+    <header class='title'>
+        <h1>Library</h1>
+    </header>
+    <main>
+        <div class='main-container' id='books-container'>
+            <!-- <div class='book block'>
+                <div class='book-name'>
+                    
+                </div>
+                <div class='book-author'></div>
+                <div class='block-bottom'>
+                    <div class='pages'></div>
+                    <div class='read-status'><img src='assets/tick.svg'></div>
+                    <div class='update-button'><img src='assets/update.svg'></div>
+                    <div class='delete-button'><img src='assets/delete-button.svg'></div>
+                </div>
+            </div>
+            <div class='book block'>
+                <div class='book-name'></div>
+                <div class='book-author'></div>
+                <div class='block-bottom'>
+                    <div class='pages'></div>
+                    <div class='read-status'><img src="assets/cross.svg"></div>
+                    <div class='update-button'><img src='assets/update.svg'></div>
+                    <div class='delete-button'><img src='assets/delete-button.svg'></div>
+                </div>
+            </div>
+            <div class='book block'>
+                <div class='book-name'></div>
+                <div class='book-author'></div>
+                <div class='block-bottom'>
+                    <div class='pages'></div>
+                    <div class='read-status'></div>
+                    <div class='update-button'><img src='assets/update.svg'></div>
+                    <div class='delete-button'><img src='assets/delete-button.svg'></div>
+                </div>
+            </div>
+            <div class='book block'>
+                <div class='book-name'></div>
+                <div class='book-author'></div>
+                <div class='block-bottom'>
+                    <div class='pages'></div>
+                    <div class='read-status'></div>
+                    <div class='update-button'><img src='assets/update.svg'></div>
+                    <div class='delete-button'><img src='assets/delete-button.svg'></div>
+                </div>
+            </div>
+            <div class='book block'>
+                <div class='book-name'></div>
+                <div class='book-author'></div>
+                <div class='block-bottom'>
+                    <div class='pages'></div>
+                    <div class='read-status'></div>
+                    <div class='update-button'><img src='assets/update.svg'></div>
+                    <div class='delete-button'><img src='assets/delete-button.svg'></div>
+                </div>
+            </div>--> 
+            <div class='add block' id='add-book' >+</div>
+        </div>
+    </main>
+    <!-- <div class="popup js-popup">
+        <form class="popup__form js-popup-form">
+            <h3 class="popup__title">Add new book</h3>
+            <input
+                class="popup__input"
+                type="text"
+                id="title"
+                placeholder="Title"
+                required
+            />
+            <input
+                class="popup__input"
+                type="text"
+                id="author"
+                placeholder="Author"
+                required
+            />
+            <input
+                class="popup__input"
+                type="number"
+                id="pages"
+                placeholder="Pages"
+                required
+            />
+            <div class="popup__is-read">
+                <label for="is-read">Read?</label>
+                <input class="popup__checkbox" type="checkbox" id="is-read" />
+            </div>
+            <button class="button button--green button--medium" type="submit">
+                Submit
+            </button>
+        </form>
+    </div>
+    <div class="overlay js-overlay"></div> -->
+    <div id="popUpOverlay"></div>
+        <div id="popUpBox">
+            <div id="box">
+            <!-- <i class="fas fa-check-circle fa-5x"></i> -->
+            <form id='form'>
+                <!-- <label for="name">Name of the book</label><br>-->
+                <input type="text" for="book_name" id="book_name" name="book_name" maxlength=50 placeholder="Book's name" class='lengthy-input' required><br><br>
+                <!-- <label for="author">Author's name</label><br> -->
+                <input type="text" id="author" name="author" maxlength=50 placeholder="Author" class='lengthy-input' required><br><br>
+                <!-- <label for="pages"></label><br> -->
+                <input type="number" id="page" name="page" min=1 max=10000 placeholder="Pages" class='lengthy-input' required><br><br>
+                <label for="read"><input type="checkbox" id="read" name="read">Read</label>
+            </form>
+            <!-- <h1>Here Goes Your Popup</h1> -->
+            <div id="closeModal"></div>
+        </div>
+    </div>
+    <!-- <button  class="btn">Show Alert</button> -->
+    <!-- <form>
+        <label ></label>
+        <input type="text">
+    </form> -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyAZf9K0FCdsOWgGejzEn_0d263g9S-rDj0",
+          authDomain: "library-4b1a5.firebaseapp.com",
+          projectId: "library-4b1a5",
+          storageBucket: "library-4b1a5.appspot.com",
+          messagingSenderId: "561810273344",
+          appId: "1:561810273344:web:e5227badde99c611855ba5"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+      </script>
+    <script src="app.js"></script>
+    <!-- <script src="./app2.js"></script> -->
+</body>
+</html>
