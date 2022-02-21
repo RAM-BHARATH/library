@@ -11,11 +11,11 @@
       "**/node_modules/**"
     ],
     "headers" : [ {
-      "key" : "Cache-Control",
-      "value" : "max-age=0"
-    } ,{
-      "key":"SameSite",
-      "value": "None"
+      "source" : "**/*.@(js|html)",
+      "headers" : [ {
+        "key" : "Cache-Control",
+        "value" : "max-age=0"
+      } ]
     }],
     "rewrites": [
       {
