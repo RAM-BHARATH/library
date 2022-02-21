@@ -15,7 +15,31 @@ h1{
 }
 header{
     background-color: aliceblue;
-    margin:0 0 10px 0;
+    padding:20px 10px;
+}
+.title{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.user-details{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.user-details *{
+    margin: 0 10px;
+}
+.user-details button{
+    box-sizing: border-box;
+    border:1px rgb(184, 184, 184) solid;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: rgb(200, 242, 250);
+}
+
+.user-details button:active{
+    background-color: rgb(120, 145, 150);
 }
 .button{
     box-sizing: border-box;
@@ -73,6 +97,13 @@ header{
 
 .add{
     padding: 150px 2px;
+    cursor: pointer;
+    transition: 500ms ease;
+}
+
+.add:active{
+    transform: scale(1.05);
+    background-color: rgb(124, 155, 111);
 }
 
 
@@ -108,7 +139,7 @@ header{
     grid-column: 1/2;
     height: 50px;
     background-color: rgb(63, 108, 148);
-    overflow-x:scroll;
+    overflow-x:auto;
     overflow-y: hidden;
 }
 .pages p{
