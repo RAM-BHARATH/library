@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="light"
+   enable-background="new 0 0 24 24"
+   height="512"
+   viewBox="0 0 24 24"
+   width="512"
+   version="1.1"
+   sodipodi:docname="tick.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata13">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs11" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="837"
+     inkscape:window-height="480"
+     id="namedview9"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="429"
+     inkscape:window-y="57"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="light" />
+  <g
+     id="g6"
+     style="fill:#2bbc0f;fill-opacity:0.94163424;stroke:none;stroke-opacity:1">
+    <g
+       id="g4"
+       style="fill:#2bbc0f;fill-opacity:0.94163424;stroke:none;stroke-opacity:1">
+      <path
+         d="m9 19.915c-.4 0-.777-.156-1.061-.439l-6-6c-.585-.585-.585-1.536 0-2.121l1.414-1.414c.584-.585 1.537-.585 2.121 0l3.526 3.523 9.525-9.525c.584-.585 1.537-.585 2.121 0l1.414 1.414c.585.585.585 1.536 0 2.121l-12 12c-.283.284-.66.441-1.06.441zm.707-.793h.01zm-5.293-8.622c-.128 0-.256.048-.354.146l-1.414 1.414c-.195.195-.195.512 0 .707l6 6c.189.188.518.188.707 0l12-12c.195-.195.195-.512 0-.707l-1.414-1.414c-.195-.195-.512-.195-.707 0l-9.879 9.878c-.195.195-.512.195-.707 0l-3.879-3.878c-.097-.097-.225-.146-.353-.146z"
+         id="path2"
+         style="fill:#2bbc0f;fill-opacity:0.94163424;stroke:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

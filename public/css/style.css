@@ -1,0 +1,154 @@
+html{
+    font-size: 12px;
+    font-family: Cousine,'Courier New', Courier, monospace;
+    background-color: rgb(4, 6, 31);
+}
+
+body{
+    min-height: 100vh;
+    min-width: 100vw;
+    background-color: rgb(153, 177, 199);
+    text-align: center;
+}
+h1{
+    font-size: 3em;
+}
+header{
+    background-color: aliceblue;
+    margin:0 0 10px 0;
+}
+.button{
+    box-sizing: border-box;
+    border:1px #000 solid;
+    border-radius: 10px;
+    background-color: rgb(33, 203, 233);
+}
+
+.main-container{
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 100%;
+}
+@media(min-width:720px){
+    .main-container{
+        margin: 0 auto;
+        grid-template-columns: repeat(2,50%);
+    }
+}
+@media(min-width:1024px){
+    .main-container{
+        margin: 0 auto;
+        grid-template-columns: repeat(3,35%);
+    }
+}
+
+@media(min-width:1400px){
+    .main-container{
+        margin: 0 auto;
+        grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    }
+}
+
+
+.block{
+    display: block;
+    /* padding: 10px 15px; */
+    font-size: 6em;
+    height: 100px;
+    width: 250px;
+    background-color: rgb(171, 212, 153);
+    margin:5px auto;
+}
+
+.book{
+    padding: 0px;
+    height: 400px;
+    display: grid;
+    grid-template-rows:250px 100px 50px;
+    grid-template-columns: 100%;
+    font-size: 2em;
+    /* padding: 3px; */
+    background-color: rgb(171, 212, 153);
+}
+
+.add{
+    padding: 150px 2px;
+}
+
+
+.book-name{
+    width:100%;
+    height: 250px;
+    background-color: aliceblue;
+    word-wrap: break-word;
+    /* padding: 3px; */
+}
+.book-name p{
+    padding:5px;
+    /* background-color: rgb(60, 94, 124); */
+}
+.book-author{
+    width: 100%;
+    height: 100px;
+    background-color: rgb(105, 148, 185);
+    word-wrap: break-word;
+    /* padding: 3px; */
+}
+.book-author p{
+    padding: 5px;
+}
+.block-bottom{
+    grid-row:3/4;
+    height: 50px;
+    background-color: aliceblue;
+    display: grid;
+    grid-template-columns: repeat(4,25%);
+}
+.pages{
+    grid-column: 1/2;
+    height: 50px;
+    background-color: rgb(63, 108, 148);
+    overflow-x:scroll;
+    overflow-y: hidden;
+}
+.pages p{
+    padding-top: 15px;
+}
+.read-status{
+    background-color: rgb(143, 194, 238);
+    height: 50px;
+    position: relative;
+}
+.read-status img{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    /* background-color: rgb(49, 168, 158); */
+    left:5px;
+}
+.update-button{
+    background-color: aliceblue;
+    height: 50px;
+    position: relative;
+}
+.update-button img{
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    left: 18px;
+    top:8px;
+    /* background-color: rgb(87, 129, 167); */
+}
+.delete-button{
+    grid-column:4/5;
+    background-color: rgb(223, 37, 37);
+    position: relative;
+    height:50px;
+}
+.delete-button img{
+    /* height:50px; */
+    width:50px;
+    /* background-color: aliceblue; */
+    position: absolute;
+    left: 8px;
+}

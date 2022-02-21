@@ -1,20 +1,33 @@
-let myLibrary = [];
-let uniqueID=0;
-if(JSON.parse(localStorage.getItem('library'))==null){
-  myLibrary=[];
-  console.log(1+": Library item not available so far");
-}
-else{
-  myLibrary = JSON.parse(localStorage.getItem('library'));
-  console.log(2+": We have library item already!");
-  
-}
+import { async } from '@firebase/util';
+import { initializeApp } from 'firebase/app';
+import {
+  getAuth,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+  doc,
+  serverTimestamp,
+  where,
+  getDoc,
+  getDocs,
+} from 'firebase/firestore';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { getPerformance } from 'firebase/performance';
 
-if(JSON.parse(localStorage.getItem('ID'))==null){
-  uniqueID = 0;
-}else{
-  uniqueID = JSON.parse(localStorage.getItem('ID'));
-}
+import { getFirebaseConfig, db } from './firebase-config.js';
+
 let addBookButton = document.getElementById('add-book');
 let deleteButtons = document.querySelectorAll('.delete-button');
 let updateButtons = document.querySelectorAll('.update-button');
@@ -28,6 +41,30 @@ let read = document.getElementById('read');
 let Alert = new CustomAlert();
 
 const mainContainer = document.getElementById('books-container');
+
+let myLibrary = [];
+let uniqueID=0;
+
+console.log("Enters here");
+if(JSON.parse(localStorage.getItem('library'))==null){
+  myLibrary=[];
+  console.log(1+": Library item not available so far");
+}
+else{
+  myLibrary = JSON.parse(localStorage.getItem('library'));
+  console.log(2+": We have library item already!");
+}
+
+if(JSON.parse(localStorage.getItem('ID'))==null){
+  uniqueID = 0;
+}else{
+  uniqueID = JSON.parse(localStorage.getItem('ID'));
+}
+getAllBooks();
+
+// loadLibrary();
+// getAllBooks();
+
 
 addBookButton.addEventListener('click',function(){
   // console.log(addBookButton.textContent);
@@ -49,7 +86,13 @@ function addBookToLibrary(title, author, pages, read) {
   // do stuff here
   let book = new Book(title, author, pages, read);
   myLibrary.push(book);
-  // console.log(myLibrary);
+  myLibrary = JSON.stringify(myLibrary)
+  myLibrary = JSON.parse(myLibrary)
+  if(isUserSignedIn()){
+    saveLibrary();
+  }
+  console.log("Add book to Library")
+  console.log(myLibrary);
   getAllBooks();
 }
 
@@ -136,6 +179,9 @@ function deleteBook(){
       break;
     }
   }
+  if(isUserSignedIn()){
+    updateLibrary();
+  }
   getAllBooks();
 }
 
@@ -156,6 +202,9 @@ function updateBook(bookTitle,bookAuthor,bookPages,bookRead,id){
       // Alert.updateRender(bookTitle,bookAuthor,bookPages,bookRead,bookId);
     }
   }
+  if(isUserSignedIn()){
+    updateLibrary();
+  }
   getAllBooks();
 }
 
@@ -168,6 +217,9 @@ function toggleReadStatus(){
       console.log(myLibrary[i].read);
       break;
     }
+  }
+  if(isUserSignedIn()){
+    updateLibrary();
   }
   getAllBooks();
 }
@@ -301,12 +353,12 @@ function storageAvailable(type) {
   }
   
 }
-if (storageAvailable('localStorage')) {
-  console.log(`Yippee! We can use localStorage awesomeness`);
-}
-else {
-  console.log(`Too bad, no localStorage for us`);
-}
+// if (storageAvailable('localStorage')) {
+//   console.log(`Yippee! We can use localStorage awesomeness`);
+// }
+// else {
+//   console.log(`Too bad, no localStorage for us`);
+// }
 localStorage.setItem('library',JSON.stringify(myLibrary));
 localStorage.setItem('ID',uniqueID);
 
@@ -318,5 +370,179 @@ function getBooksFromStorage(){
     console.log(items[i]);
   }
 }
-getBooksFromStorage();
-getAllBooks();
+if(!isUserSignedIn()){
+  getBooksFromStorage();
+  getAllBooks();
+}else{
+  loadLibrary();
+  getAllBooks();
+}
+// getAllBooks();
+
+//Firebase code
+
+let signInButton = document.getElementById('sign-in');
+let signOutButton = document.getElementById('sign-out');
+let userNameElement = document.getElementById('user-name');
+
+signInButton.addEventListener('click',signIn);
+signOutButton.addEventListener('click', signOutUser);
+
+const firebaseAppConfig = getFirebaseConfig();
+initializeApp(firebaseAppConfig);
+
+async function signIn() {
+  var provider = new GoogleAuthProvider();
+  await signInWithPopup(getAuth(), provider);
+  await loadLibrary();
+  getAllBooks();
+}
+
+// Signs-out
+function signOutUser() {
+  // Sign out of Firebase.
+  signOut(getAuth());
+  // myLibrary=[]
+  // localStorage.setItem('library',[])
+}
+
+// Initialize firebase auth
+function initFirebaseAuth() {
+  // Listen to auth state changes.
+  onAuthStateChanged(getAuth(), authStateObserver);
+}
+
+function authStateObserver(user) {
+  if (user) {
+    // User is signed in!
+    // Get the signed-in user's profile pic and name.
+    // var profilePicUrl = getProfilePicUrl();
+    var userName = getUserName();
+    // Set the user's profile pic and name.
+    // userPicElement.style.backgroundImage =
+    //   'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
+    userNameElement.textContent = userName;
+
+    // Show user's profile and sign-out button.
+    userNameElement.removeAttribute('hidden');
+    // userPicElement.removeAttribute('hidden');
+    signOutButton.removeAttribute('hidden');
+
+    // Hide sign-in button.
+    signInButton.setAttribute('hidden', 'true');
+
+    // We save the Firebase Messaging Device token and enable notifications.
+    // saveMessagingDeviceToken();
+  } else {
+    // User is signed out!
+    // Hide user's profile and sign-out button.
+    userNameElement.setAttribute('hidden', 'true');
+    // userPicElement.setAttribute('hidden', 'true');
+    signOutButton.setAttribute('hidden', 'true');
+
+    // Show sign-in button.
+    signInButton.removeAttribute('hidden');
+  }
+  if(isUserSignedIn()){
+    loadLibrary();
+  }else{
+    console.log("Logged out")
+    myLibrary=[]
+    localStorage.setItem('library',JSON.stringify([]))
+    getAllBooks();
+  }
+  getAllBooks();
+}
+
+// Returns the signed-in user's display name.
+function getUserName() {
+  // TODO 5: Return the user's display name.
+  console.log(getAuth().currentUser);
+  return getAuth().currentUser.displayName;
+}
+
+function getEmail(){
+  return getAuth().currentUser.email;
+}
+
+function isUserSignedIn() {
+  // TODO 6: Return true if a user is signed-in.
+  return !!getAuth().currentUser;
+}
+
+// Saves a new message to Cloud Firestore.
+async function saveLibrary() {
+  // Add a new message entry to the Firebase database.
+  if(loadLibrary!=[]){
+    updateLibrary();
+  }else{
+    try {
+      await addDoc(collection(getFirestore(), `library_data`), {
+        email: getEmail(),
+        name: getUserName(),
+        library: myLibrary,
+        timestamp: serverTimestamp()
+      });
+    }
+    catch(error) {
+      console.error('Error writing new message to Firebase Database', error);
+    }
+  }
+}
+
+// Loads chat messages history and listens for upcoming ones.
+async function loadLibrary() {
+  // const db = firebase.firestore()
+  // Create the query to load the last 12 messages and listen for new ones.
+  // const libraryItemsQuery = query(getDoc(getFirestore(), 'libary_data')); //, where('email','==',getEmail())
+  // const libraryItemsQuery = db.collection('library_data').get().then((snapshot) =>{
+  const libraryCollection = collection(db, 'library_data');  
+  const librarySnapshot = await getDocs(libraryCollection);
+  const libraryList = librarySnapshot.docs.map(doc => doc.data());
+  console.log('=======================================')
+  // console.log(librarySnapshot)
+  for(let i=0; i<librarySnapshot.docs.length;i++){
+    console.log(librarySnapshot.docs[i].id)
+    console.log(librarySnapshot.docs[i].data());
+    console.log(librarySnapshot.docs[i].data().library);
+    if(librarySnapshot.docs[i].data().email===getEmail()){
+      myLibrary = librarySnapshot.docs[i].data().library;
+      console.log("Current user: ", getEmail())
+    }
+    // console.log("Using id to get a doc");
+    // console.log(db.collection('library_data').doc(librarySnapshot.docs[i].id).get())
+    // console.log((await getDoc(doc(db, 'library_data', librarySnapshot.docs[i].id))).data())
+  }
+  console.log(libraryList);
+  console.log('=======================================')
+  // Start listening to the query.
+  console.log("From snapshot")
+  // console.log(libraryItemsQuery);
+  // onSnapshot(libraryItemsQuery, function(snapshot) {
+    // snapshot.docChanges().forEach(function(change) {
+      // if (change.type === 'removed') {
+      //   deleteMessage(change.doc.id);
+      // } else {
+      //   var message = change.doc.data();
+      //   displayMessage(change.doc.id, message.timestamp, message.name,
+      //                 message.text, message.imageUrl);
+      // }
+    //   console.log(libraryItemsQuery)
+    // });
+  // });
+  return libraryList;
+}
+
+async function updateLibrary(){
+  const libraryCollection = collection(db, 'library_data');  
+  const librarySnapshot = await getDocs(libraryCollection);
+  const libraryList = librarySnapshot.docs.map(doc => doc.data());
+  for(let i=0;i<librarySnapshot.docs.length;i++){
+    if(librarySnapshot.docs[i].data().email===getEmail()){
+      await updateDoc(doc(db, 'library_data', librarySnapshot.docs[i].id),{
+        library: myLibrary
+      })
+    }
+  }  
+}
+initFirebaseAuth();

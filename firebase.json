@@ -1,0 +1,27 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers" : [ {
+      "key" : "Cache-Control",
+      "value" : "max-age=0"
+    } ,{
+      "key":"SameSite",
+      "value": "None"
+    }],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "dist/index.html"
+      }
+    ]
+  }
+}
