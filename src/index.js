@@ -387,7 +387,7 @@ if(!isUserSignedIn()){
 
 let signInButton = document.getElementById('sign-in');
 let signOutButton = document.getElementById('sign-out');
-let userNameElement = document.getElementById('user-name');
+let userEmailElement = document.getElementById('user-mail');
 
 signInButton.addEventListener('click',signIn);
 signOutButton.addEventListener('click', signOutUser);
@@ -422,14 +422,14 @@ function authStateObserver(user) {
     // User is signed in!
     // Get the signed-in user's profile pic and name.
     // var profilePicUrl = getProfilePicUrl();
-    var userName = getUserName();
+    var userEmail = getEmail();
     // Set the user's profile pic and name.
     // userPicElement.style.backgroundImage =
     //   'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
-    userNameElement.textContent = userName;
+    userEmailElement.textContent = userEmail;
 
     // Show user's profile and sign-out button.
-    userNameElement.removeAttribute('hidden');
+    userEmailElement.removeAttribute('hidden');
     // userPicElement.removeAttribute('hidden');
     signOutButton.removeAttribute('hidden');
 
@@ -441,7 +441,7 @@ function authStateObserver(user) {
   } else {
     // User is signed out!
     // Hide user's profile and sign-out button.
-    userNameElement.setAttribute('hidden', 'true');
+    userEmailElement.setAttribute('hidden', 'true');
     // userPicElement.setAttribute('hidden', 'true');
     signOutButton.setAttribute('hidden', 'true');
 
