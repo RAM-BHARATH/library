@@ -88,9 +88,9 @@ function addBookToLibrary(title, author, pages, read) {
   myLibrary.push(book);
   myLibrary = JSON.stringify(myLibrary)
   myLibrary = JSON.parse(myLibrary)
-  if(isUserSignedIn()){
+  // if(isUserSignedIn()){
     saveLibrary();
-  }
+  // }
   console.log("Add book to Library")
   console.log(myLibrary);
   getAllBooks();
@@ -128,8 +128,10 @@ function getAllBooks(){
     }
     // console.log(myLibrary[i]);
   }
-  localStorage.setItem('library',JSON.stringify(myLibrary));
-  console.log("From local storage API: "+JSON.parse(localStorage.getItem('library')));
+  if(!isUserSignedIn()){
+    localStorage.setItem('library',JSON.stringify(myLibrary));
+    console.log("From local storage API: "+JSON.parse(localStorage.getItem('library')));
+  }
   localStorage.setItem('ID',uniqueID);
   mainContainer.innerHTML+=`<div class='add block' id='add-book'">+</div>`; //onclick="Alert.render('')
   addBookButton = document.getElementById('add-book');
@@ -328,39 +330,41 @@ function CustomAlert(){
 
 form.reset();
 
-function storageAvailable(type) {
-  var storage;
-  try {
-      storage = window[type];
-      var x = '__storage_test__';
-      storage.setItem(x, x);
-      storage.removeItem(x);
-      return true;
-  }
-  catch(e) {
-      return e instanceof DOMException && (
-          // everything except Firefox
-          e.code === 22 ||
-          // Firefox
-          e.code === 1014 ||
-          // test name field too, because code might not be present
-          // everything except Firefox
-          e.name === 'QuotaExceededError' ||
-          // Firefox
-          e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-          // acknowledge QuotaExceededError only if there's something already stored
-          (storage && storage.length !== 0);
-  }
+// function storageAvailable(type) {
+//   var storage;
+//   try {
+//       storage = window[type];
+//       var x = '__storage_test__';
+//       storage.setItem(x, x);
+//       storage.removeItem(x);
+//       return true;
+//   }
+//   catch(e) {
+//       return e instanceof DOMException && (
+//           // everything except Firefox
+//           e.code === 22 ||
+//           // Firefox
+//           e.code === 1014 ||
+//           // test name field too, because code might not be present
+//           // everything except Firefox
+//           e.name === 'QuotaExceededError' ||
+//           // Firefox
+//           e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+//           // acknowledge QuotaExceededError only if there's something already stored
+//           (storage && storage.length !== 0);
+//   }
   
-}
+// }
 // if (storageAvailable('localStorage')) {
 //   console.log(`Yippee! We can use localStorage awesomeness`);
 // }
 // else {
 //   console.log(`Too bad, no localStorage for us`);
 // }
-localStorage.setItem('library',JSON.stringify(myLibrary));
-localStorage.setItem('ID',uniqueID);
+if(!!isUserSignedIn()){
+  localStorage.setItem('library',JSON.stringify(myLibrary));
+  localStorage.setItem('ID',uniqueID);
+}
 
 function getBooksFromStorage(){
   let items = JSON.parse(localStorage.getItem('library'))
@@ -394,8 +398,9 @@ initializeApp(firebaseAppConfig);
 async function signIn() {
   var provider = new GoogleAuthProvider();
   await signInWithPopup(getAuth(), provider);
-  await loadLibrary();
-  getAllBooks();
+  loadLibrary().then(
+    getAllBooks()
+  )
 }
 
 // Signs-out
@@ -444,13 +449,14 @@ function authStateObserver(user) {
     signInButton.removeAttribute('hidden');
   }
   if(isUserSignedIn()){
+    // myLibrary=[]
     loadLibrary();
   }else{
     console.log("Logged out")
-    myLibrary=[]
-    localStorage.setItem('library',JSON.stringify([]))
+    myLibrary = JSON.parse(localStorage.getItem('library'))
     getAllBooks();
   }
+  // myLibrary=[]
   getAllBooks();
 }
 
@@ -473,7 +479,15 @@ function isUserSignedIn() {
 // Saves a new message to Cloud Firestore.
 async function saveLibrary() {
   // Add a new message entry to the Firebase database.
-  if(loadLibrary!=[]){
+  if(myLibrary.length>1){
+    console.log('===================')
+    console.log(myLibrary.length);
+    console.log("My library")
+    console.log(myLibrary);
+    console.log('===================')
+    // console.log("----------------------In loadLibrary--------------------")
+    // console.log(await loadLibrary());
+    // console.log("Non empty library")
     updateLibrary();
   }else{
     try {
@@ -530,6 +544,7 @@ async function loadLibrary() {
     //   console.log(libraryItemsQuery)
     // });
   // });
+  getAllBooks();
   return libraryList;
 }
 
